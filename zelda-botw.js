@@ -66,17 +66,26 @@ SavegameEditor={
 	_writeBoolean:function(offset,val,arrayIndex){if(arrayIndex)tempFile.writeU32(offset+8*arrayIndex,val?1:0);else tempFile.writeU32(offset,val?1:0)},
 	_writeValue:function(offset,val,arrayIndex){if(arrayIndex)tempFile.writeU32(offset+8*arrayIndex,val);else tempFile.writeU32(offset,val)},
 	_writeFloat32:function(offset,val,arrayIndex){if(arrayIndex)tempFile.writeF32(offset+8*arrayIndex,val);else tempFile.writeF32(offset,val)},
-	_writeString:function(offset,str,len){
-		len=len || 8;
-		for(var i=0; i<len; i++){
-			tempFile.writeBytes(offset,[0,0,0,0]);
-			var fourBytes=str.substr(i*4, 4);
-			for(j=0; j<fourBytes.length; j++){
-				tempFile.writeU8(offset+j, fourBytes.charCodeAt(j));
-			}
-			offset+=8;
-		}
-	},
+_writeString:function(offset,str,len){
+    str = String(str || ''); // Asegura que sea string
+    len = len || 8;
+    
+    // Escribir cada grupo de 8 bytes
+    for(var i=0; i<len; i++){
+        // Limpiar 8 bytes
+        for(var k=0; k<8; k++){
+            tempFile.writeU8(offset + k, 0x00);
+        }
+        
+        // Escribir hasta 4 caracteres en los primeros 4 bytes
+        var fourBytes = str.substr(i*4, 4);
+        for(var j=0; j<fourBytes.length; j++){
+            tempFile.writeU8(offset + j, fourBytes.charCodeAt(j));
+        }
+        
+        offset += 8;
+    }
+},
 	_writeString64:function(offset,str,arrayIndex){if(typeof arrayIndex==='number')offset+=this.Constants.STRING64_SIZE*arrayIndex;this._writeString(offset,str, 16);},
 	_writeString256:function(offset,str){this._writeString(offset,str, 64);},
 
