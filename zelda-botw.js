@@ -665,9 +665,25 @@ _writeString:function(offset,str,len){
 		this._writeString(this.Offsets.MAP, getValue('pos-map'))
 		this._writeString(this.Offsets.MAPTYPE, getValue('pos-maptype'))
 
-		this._writeString(this.Offsets.HORSE_POSITION, getValue('pos-x-horse'), 8);
-		this._writeString(this.Offsets.HORSE_POSITION+8, getValue('pos-y-horse'), 8);
-		this._writeString(this.Offsets.HORSE_POSITION+16, getValue('pos-z-horse'), 8);
+		// HORSE POSITION - escritura directa byte a byte
+		var word1 = document.getElementById('float-pos-x-horse').value || '';
+		var word2 = document.getElementById('float-pos-y-horse').value || '';
+		var word3 = document.getElementById('float-pos-z-horse').value || '';
+
+		console.log('Escribiendo what3words:', word1, word2, word3);
+
+for(var i=0; i<8; i++){
+    tempFile.writeU8(this.Offsets.HORSE_POSITION + i, i < word1.length ? word1.charCodeAt(i) : 0x00);
+}
+for(var i=0; i<8; i++){
+    tempFile.writeU8(this.Offsets.HORSE_POSITION + 8 + i, i < word2.length ? word2.charCodeAt(i) : 0x00);
+}
+for(var i=0; i<8; i++){
+    tempFile.writeU8(this.Offsets.HORSE_POSITION + 16 + i, i < word3.length ? word3.charCodeAt(i) : 0x00);
+}
+
+/* ITEMS */
+// ...existing code...
 
 		/* ITEMS */
 		for(var i=0; i<this.Constants.MAX_ITEMS; i++){
