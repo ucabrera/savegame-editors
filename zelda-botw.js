@@ -517,9 +517,9 @@ SavegameEditor={
 		setValue('pos-map',map)
 		setValue('pos-maptype',mapType)
 
-		setValue('pos-x-horse', tempFile.readF32(this.Offsets.HORSE_POSITION));
-		setValue('pos-y-horse', tempFile.readF32(this.Offsets.HORSE_POSITION+8));
-		setValue('pos-z-horse', tempFile.readF32(this.Offsets.HORSE_POSITION+16));
+		setValue('pos-x-horse', this._readString(this.Offsets.HORSE_POSITION, 8));
+		setValue('pos-y-horse', this._readString(this.Offsets.HORSE_POSITION+8, 8));
+		setValue('pos-z-horse', this._readString(this.Offsets.HORSE_POSITION+16, 8));
 
 
 		/* map pins */
@@ -643,10 +643,9 @@ SavegameEditor={
 		this._writeString(this.Offsets.MAP, getValue('pos-map'))
 		this._writeString(this.Offsets.MAPTYPE, getValue('pos-maptype'))
 
-		tempFile.writeF32(this.Offsets.HORSE_POSITION, getValue('pos-x-horse'));
-		tempFile.writeF32(this.Offsets.HORSE_POSITION+8, getValue('pos-y-horse'));
-		tempFile.writeF32(this.Offsets.HORSE_POSITION+16, getValue('pos-z-horse'));
-
+		this._writeString(this.Offsets.HORSE_POSITION, getValue('pos-x-horse'), 8);
+		this._writeString(this.Offsets.HORSE_POSITION+8, getValue('pos-y-horse'), 8);
+		this._writeString(this.Offsets.HORSE_POSITION+16, getValue('pos-z-horse'), 8);
 
 		/* ITEMS */
 		for(var i=0; i<this.Constants.MAX_ITEMS; i++){
