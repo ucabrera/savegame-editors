@@ -513,14 +513,17 @@ _writeString:function(offset,str,len){
 
 
 		/* COORDINATES */
-		tempFile.writeF32(this.Offsets.PLAYER_POSITION, getValue('pos-x'));
-		tempFile.writeF32(this.Offsets.PLAYER_POSITION+8, getValue('pos-y'));
-		tempFile.writeF32(this.Offsets.PLAYER_POSITION+16, getValue('pos-z'));
+		setValue('pos-x', tempFile.readF32(this.Offsets.PLAYER_POSITION));
+		setValue('pos-y', tempFile.readF32(this.Offsets.PLAYER_POSITION+8));
+		setValue('pos-z', tempFile.readF32(this.Offsets.PLAYER_POSITION+16));
 
-		this._writeString(this.Offsets.MAP, getValue('pos-map'))
-		this._writeString(this.Offsets.MAPTYPE, getValue('pos-maptype'))
+		// LEER (no escribir) el mapa
+		var map = this._readString(this.Offsets.MAP);
+		var mapType = this._readString(this.Offsets.MAPTYPE);
+		setValue('pos-map', map);
+		setValue('pos-maptype', mapType);
 
-		// HORSE POSITION como strings 
+		// HORSE POSITION como strings (mantén el código que ya tienes)
 		var word1 = '', word2 = '', word3 = '';
 		for(var i=0; i<8; i++){
 				var byte = tempFile.readU8(this.Offsets.HORSE_POSITION + i);
