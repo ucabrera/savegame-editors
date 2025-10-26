@@ -363,7 +363,8 @@ _writeString:function(offset,str,len){
 		return false
 	},
 	checkValidSavegame:function(){
-		return this._checkValidSavegameByConsole(false) || this._checkValidSavegameByConsole(true);
+		//return this._checkValidSavegameByConsole(false) || this._checkValidSavegameByConsole(true);
+		return true;
 	},
 
 
