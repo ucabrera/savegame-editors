@@ -512,23 +512,32 @@ _writeString:function(offset,str,len){
 		}
 
 
-		/* coordinates */
-		setValue('pos-x', tempFile.readF32(this.Offsets.PLAYER_POSITION));
-		setValue('pos-y', tempFile.readF32(this.Offsets.PLAYER_POSITION+8));
-		setValue('pos-z', tempFile.readF32(this.Offsets.PLAYER_POSITION+16));
+		/* COORDINATES */
+		tempFile.writeF32(this.Offsets.PLAYER_POSITION, getValue('pos-x'));
+		tempFile.writeF32(this.Offsets.PLAYER_POSITION+8, getValue('pos-y'));
+		tempFile.writeF32(this.Offsets.PLAYER_POSITION+16, getValue('pos-z'));
 
-		var map=this._readString(this.Offsets.MAP);
-		var mapType=this._readString(this.Offsets.MAPTYPE);
-		getField('pos-map').children[0].value=map;
-		getField('pos-map').children[0].innerHTML='* '+map+' *';
-		getField('pos-maptype').children[0].value=mapType;
-		getField('pos-maptype').children[0].innerHTML='* '+mapType+' *';
-		setValue('pos-map',map)
-		setValue('pos-maptype',mapType)
+		this._writeString(this.Offsets.MAP, getValue('pos-map'))
+		this._writeString(this.Offsets.MAPTYPE, getValue('pos-maptype'))
 
-		setValue('pos-x-horse', this._readString(this.Offsets.HORSE_POSITION, 8));
-		setValue('pos-y-horse', this._readString(this.Offsets.HORSE_POSITION+8, 8));
-		setValue('pos-z-horse', this._readString(this.Offsets.HORSE_POSITION+16, 8));
+		// HORSE POSITION como strings 
+		var word1 = '', word2 = '', word3 = '';
+		for(var i=0; i<8; i++){
+				var byte = tempFile.readU8(this.Offsets.HORSE_POSITION + i);
+				if(byte !== 0) word1 += String.fromCharCode(byte);
+		}
+		for(var i=0; i<8; i++){
+				var byte = tempFile.readU8(this.Offsets.HORSE_POSITION + 8 + i);
+				if(byte !== 0) word2 += String.fromCharCode(byte);
+		}
+		for(var i=0; i<8; i++){
+				var byte = tempFile.readU8(this.Offsets.HORSE_POSITION + 16 + i);
+				if(byte !== 0) word3 += String.fromCharCode(byte);
+		}
+
+		document.getElementById('float-pos-x-horse').value = word1;
+		document.getElementById('float-pos-y-horse').value = word2;
+		document.getElementById('float-pos-z-horse').value = word3;
 
 
 		/* map pins */
