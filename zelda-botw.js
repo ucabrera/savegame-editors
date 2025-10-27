@@ -670,20 +670,16 @@ _writeString:function(offset,str,len){
 		var word2 = document.getElementById('float-pos-y-horse').value || '';
 		var word3 = document.getElementById('float-pos-z-horse').value || '';
 
-		console.log('Escribiendo what3words:', word1, word2, word3);
 
-for(var i=0; i<8; i++){
-    tempFile.writeU8(this.Offsets.HORSE_POSITION + i, i < word1.length ? word1.charCodeAt(i) : 0x00);
-}
-for(var i=0; i<8; i++){
-    tempFile.writeU8(this.Offsets.HORSE_POSITION + 8 + i, i < word2.length ? word2.charCodeAt(i) : 0x00);
-}
-for(var i=0; i<8; i++){
-    tempFile.writeU8(this.Offsets.HORSE_POSITION + 16 + i, i < word3.length ? word3.charCodeAt(i) : 0x00);
-}
-
-/* ITEMS */
-// ...existing code...
+		for(var i=0; i<8; i++){
+				tempFile.writeU8(this.Offsets.HORSE_POSITION + i, i < word1.length ? word1.charCodeAt(i) : 0x00);
+		}
+		for(var i=0; i<8; i++){
+				tempFile.writeU8(this.Offsets.HORSE_POSITION + 8 + i, i < word2.length ? word2.charCodeAt(i) : 0x00);
+		}
+		for(var i=0; i<8; i++){
+				tempFile.writeU8(this.Offsets.HORSE_POSITION + 16 + i, i < word3.length ? word3.charCodeAt(i) : 0x00);
+		}
 
 		/* ITEMS */
 		for(var i=0; i<this.Constants.MAX_ITEMS; i++){
